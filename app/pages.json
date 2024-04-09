@@ -1,0 +1,197 @@
+{
+	"easycom": {
+		"autoscan": true,
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
+		"^tn-(.*)": "@/tuniao-ui/components/tn-$1/tn-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+
+		{
+			"path": "pages/index/index",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+			
+		},{
+			"path": "pages/login/login"
+
+		}, {
+			"path": "pages/me/me"
+			
+
+		},{
+			"path": "pages/login/register"
+			
+		},
+		{
+			"path": "pages/login/rootip"
+			
+		},
+		{
+			"path": "pages/me/medetail"
+			
+		},
+		{
+			"path": "pages/me/tags"
+
+		}, {
+			"path": "pages/notice/notice"
+			
+		}, {
+			"path": "pages/notice/noticedetail"
+			
+		}, {
+			"path": "pages/favs/favs"
+		}
+	    ,{
+            "path" : "pages/chat/huihua"
+            
+            
+        },{
+			"path" : "pages/chat/chat"
+
+
+		},{
+            "path" : "pages/blog/blog"
+            
+            
+        },{
+			"path" : "pages/blog/bloguser"
+
+
+		},{
+            "path" : "pages/blog/blogmg"
+            
+            
+        },{
+			"path" : "pages/blog/bloglist"
+
+
+		},{
+			"path" : "pages/blog/play"
+
+
+		},{
+            "path" : "pages/blog/blogdetail"
+            
+            
+        },{
+			"path" : "pages/blog/blogtuijian"
+
+
+		},{
+			"path" : "pages/blog/blogzan"
+
+
+		},{
+            "path" : "pages/history/history"
+            
+            
+        }
+		,{
+		    "path" : "pages/posts/posts"
+		},{
+		    "path" : "pages/posts/postsdetail"
+		},{
+		    "path" : "pages/posts/postsmg"
+		},{
+		    "path" : "pages/posts/postslist"
+		},{
+		    "path" : "pages/qunzu/qunzu"
+		},{
+		    "path" : "pages/qunzu/qunzulist"
+		},{
+		    "path" : "pages/qunzu/qunzumg"
+		},{
+		    "path" : "pages/qunzu/qunzudetail"
+		},{
+		    "path" : "pages/qunzu/users"
+		},{
+		    "path" : "pages/qunzu/qunusermg"
+		},{
+		    "path" : "pages/qunzu/userdetail"
+		},{
+		    "path" : "pages/qunzu/yzmessage"
+		},{
+		    "path" : "pages/qunzu/yzmessagedetail"
+		},{
+		    "path" : "pages/qunzu/posts"
+		},{
+		    "path" : "pages/qunzu/postsmg"
+		},{
+		    "path" : "pages/qunzu/postslist"
+		},{
+		    "path" : "pages/qunzu/postsdetail"
+		},{
+		    "path" : "pages/qunzu/friends"
+		},{
+			"path" : "pages/qunzu/searchfriends"
+		},{
+		    "path" : "pages/qunzu/qiandaodetail"
+		},{
+		    "path" : "pages/qunzu/qiandao"
+		},{
+		    "path" : "pages/qunzu/qiandaomg"
+		},{
+			"path" : "pages/tianqii/tianqii"
+		},{
+			"path" : "pages/shops/shops"
+		},{
+			"path" : "pages/shops/shopdetail"
+		},{
+			"path" : "pages/unimap/unimap"
+		},{
+			"path" : "pages/unimap/unimapchoose"
+		},{
+			"path" : "pages/huodong/huodong"
+		},{
+			"path" : "pages/huodong/huodongdetail"
+		},{
+			"path" : "pages/qunzu/pipeifriends"
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"titleNView": false,
+		"scrollIndicator": "none",
+		"navigationStyle": "custom",
+		"navigationBarRightButton": {
+			"hide": true
+		}
+	},
+	"uniIdRouter": {},
+	"tabBar": {
+		"color": "#666",
+		"selectedColor": "#ff6037",
+		"backgroundColor": "#fff",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"text": "首页",
+			"iconPath": "static/images/tabbar/shouye.png",
+			"selectedIconPath": "static/images/tabbar/shouye.png"
+		}, {
+			"pagePath": "pages/qunzu/friends",
+			"text": "我的关注",
+			"iconPath": "static/images/tabbar/guanzhu.png",
+			"selectedIconPath": "static/images/tabbar/guanzhu.png"
+		}, {
+			"pagePath": "pages/qunzu/qunzu",
+			"text": "团队",
+			"iconPath": "static/images/tabbar/qunliao.png",
+			"selectedIconPath": "static/images/tabbar/qunliao.png"
+		}, {
+			"pagePath": "pages/chat/huihua",
+			"text": "消息",
+			"iconPath": "static/images/tabbar/xiaoxi.png",
+			"selectedIconPath": "static/images/tabbar/xiaoxi.png"
+		}, {
+			"pagePath": "pages/me/me",
+			"text": "我的",
+			"iconPath": "static/images/tabbar/geren.png",
+			"selectedIconPath": "static/images/tabbar/geren.png"
+		}]
+	}
+}
