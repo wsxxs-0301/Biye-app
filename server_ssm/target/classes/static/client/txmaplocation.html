@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <title id="pagetitle">地图</title>
+    <meta charset="utf-8"/>
+    <!--<meta name="format-detection" content="telephone=no"/>-->
+    <!--<meta name="msapplication-tap-highlight" content="no"/>-->
+    <!--<meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">-->
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <!--<meta name="viewport" content="user-scalable=no, width=1280,target-densitydpi=160" />-->
+    <meta id="viewport" name="viewport" content="width=480,target-densitydpi=device-dpi, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" type="text/css" href="lib/jb/jquery.mobile.custom.structure.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/colors.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="lib/jb/jquery.mobile.custom.min.js"></script>
+
+
+    <script type="text/javascript" src="js/jbtool.js"></script>
+    <script type="text/javascript" src="js/commontool.js"></script>
+    <script type="text/javascript" src="js/ideamodule.js"></script>
+    <script>
+
+    </script>
+
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div data-role="page" data-theme="a" id="selectaddresspage">
+
+    <div role="main" class="ui-content" style="margin: 0;padding: 0;">
+        <iframe width="100%" height="650px" frameborder=0
+                src="http://apis.map.qq.com/tools/locpicker?search=1&type=1&key=W7YBZ-6ZBCW-RLBRW-OWWPF-AAJQO-POBJ4&referer=myapp">
+        </iframe>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+</body>
+<script>
+
+</script>
+<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key=W7YBZ-6ZBCW-RLBRW-OWWPF-AAJQO-POBJ4&libraries=place,convertor"></script>
+
+<script type="text/javascript" src="lib/uni.webview.1.5.2.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    document.addEventListener('UniAppJSBridgeReady', function() {
+        uni.postMessage({
+            data: {
+                action: 'message'
+            }
+        });
+        /*wx.miniProgram.postMessage({ data: {foo: 'bar'} })*/
+/*        uni.webView.getEnv(function(res) {
+            console.log('当前环境：' + JSON.stringify(res));
+        });
+        wx.miniProgram.getEnv(function(res) { console.log(res.miniprogram) })*/
+        /*uni.postMessage({
+            data: {
+                action: 'message'
+            }
+        });*/
+    });
+
+    window.addEventListener('message', function(event) {
+        // 接收位置信息，用户选择确认位置点后选点组件会触发该事件，回传用户的位置信息
+        /*uni.postMessage({
+            data: {
+                action: 'message'
+            }
+        });*/
+        var loc = event.data;
+        if (loc && loc.module == 'locationPicker') {//防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
+            wx.miniProgram.postMessage({ data: {latitude: loc.latlng.lat, longitude: loc.latlng.lng, address:loc.poiaddress} })
+        }
+    }, false);
+</script>
+</html>

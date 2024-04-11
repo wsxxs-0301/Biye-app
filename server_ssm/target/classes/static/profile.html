@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="./__PUBLIC__/layuimini/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="./__PUBLIC__/layuimini/css/public.css" media="all">
+    <script src="./__PUBLIC__/layuimini/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./__PUBLIC__/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="./__PUBLIC__/js/common.js"></script>
+</head>
+<body>
+<form action="" method="post" enctype="multipart/form-data" id="uploadForm">
+    <input style="display: none;" id="selectimginput" onchange="showPicImg(this.files);" name="file" type="file"/>
+</form>
+<div class="layuimini-container">
+
+    <form id="managerform" style="padding-top: 50px;" class="layui-form layuimini-form" lay-filter="managerform">
+        <input type="hidden" name="id">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" disabled lay-verify="required"
+                       value="" class="layui-input layui-disabled">
+                <tip>填写自己管理账号的名称。</tip>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div style="text-align: center;">
+                <div style="text-align: center;width: 200px;margin-left: 200px;" id="showtx"></div>
+                <a href="#" onclick="getFileInput(this);">选择头像</a>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">手机</label>
+            <div class="layui-input-block">
+                <input type="number" name="tel" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机"
+                       value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+                <input type="email" name="email" placeholder="请输入邮箱" value="" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="note" class="layui-textarea" placeholder="请输入备注信息"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <a class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</a>
+            </div>
+        </div>
+    </form>
+
+
+</div>
+
+<script>
+
+    layui.use(['form', 'table'], function () {
+        var form = layui.form;
+        form.val("managerform",userinfo);
+        showAttach("showtx",userinfo.img);
+        form.on('submit(saveBtn)', function (formobj) {
+            var fdata = formobj.field;
+            fdata.table="user";
+            ajaxFormUploadFile(function (ir){
+                fdata.img = ir;
+                ajaxCallback1("save",fdata,function (sr) {
+                    alert("操作成功!");
+                    ajaxCallback1("find",{id:userinfo.id,table:"user"},function (data) {
+                        userinfo = data;
+                        var userinfostr = JSON.stringify(data);
+                        localStorage['adminuserinfo'] = userinfostr;
+                    });
+                })
+            });
+
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

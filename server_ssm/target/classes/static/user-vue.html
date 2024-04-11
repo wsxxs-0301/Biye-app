@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./__PUBLIC__/layui-vue/layuivue.css" />
+    <link rel="stylesheet" href="./__PUBLIC__/layui-vue/public.css" />
+    <script src="./__PUBLIC__/layui-vue/vue.global.js"></script>
+    <script src="./__PUBLIC__/layui-vue/layui-vue.js"></script>
+    <script type="text/javascript" src="./__PUBLIC__/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="./__PUBLIC__/js/common.js"></script>
+</head>
+<body>
+<form action="" method="post" enctype="multipart/form-data" id="uploadForm">
+    <input style="display: none;" id="selectimginput" onchange="showPicImg(this.files);" name="file" type="file"/>
+</form>
+<form action="" method="post" enctype="multipart/form-data" id="uploadForm2">
+    <input style="display: none;" id="selectimginput2" onchange="showPicImg2(this.files);" name="file" type="file"/>
+</form>
+<div id="app">
+    <lay-config-provider theme="day">
+    <lay-container>
+        <lay-field title="搜索">
+            <lay-form :model="sobj">
+                <lay-row>
+                    <lay-col :md="6">
+                        <lay-form-item label="用户名:" :label-width="0">
+                            <lay-input v-model="sobj.username" style="width: 100%"></lay-input>
+                        </lay-form-item>
+                    </lay-col>
+                    <lay-col :md="6">
+                        <lay-form-item label="电话:" :label-width="0">
+                            <lay-input v-model="sobj.tel" style="width: 100%"></lay-input>
+                        </lay-form-item>
+                    </lay-col>
+
+                    <lay-col :md="6">
+                        <lay-form-item label-width="0">
+                            <lay-button type="normal" style="margin-left: 10px" @click="refreshData" prefix-icon="layui-icon-search">查询</lay-button>
+                            <lay-button type="danger" @click="toReset" prefix-icon="layui-icon-refresh-three">重置</lay-button>
+                        </lay-form-item>
+                    </lay-col>
+                </lay-row>
+            </lay-form>
+        </lay-field>
+        <div style="min-height: 300px;">
+            <lay-table
+                    :even="true"
+                    :page="page"
+                    :resize="true"
+                    :height="'100%'"
+                    :columns="columns"
+                    :loading="loading"
+                    :default-toolbar="true"
+                    :data-source="dataSource"
+                    v-model:selected-keys="selectedKeys"
+                    @change="refreshData"
+                    @sortChange="sortChange"
+                    :even="true">
+                <template #status="{ row }">
+                    <lay-switch :model-value="row.status" @change="changeStatus($event , row)"></lay-switch>
+                </template>
+                <template v-slot:toolbar>
+                    <lay-button size="sm" type="normal" @click="showEdit()">新增</lay-button>
+                    <!--<lay-button size="sm" @click="remove">删除</lay-button>-->
+                </template>
+                <template v-slot:operator="{ row }">
+                    <lay-button size="xs" @click="showEdit(row)" type="normal">查看编辑</lay-button>
+                    <lay-button size="xs" @click="del(row.id)" type="danger">删除</lay-button>
+                </template>
+            </lay-table>
+        </div>
+
+        <div class="formdialog" v-show="showe">
+            <div class="formdialogtitle">查看编辑<span class="formdialogtitlegb" @click="showe=false"></span></div>
+            <div style="padding: 20px;">
+                <lay-form ref="fobjform1" required :rules="rules1" :pane="true" :model="fobj">
+                    <lay-form-item label="用户名" prop="username">
+                        <lay-input @blur="checkUser" v-model="fobj.username"></lay-input>
+                    </lay-form-item>
+                    <div class="layui-form-item" style="text-align: center;">
+                        <div style="width: 150px;margin-left: 35%;">
+                            <div style="text-align: center;">
+                                <div style="text-align: center;" id="imgctn"></div>
+                                <a href="#" onclick="getFileInput(this);">头像</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <lay-form-item label="权限">
+                        <lay-select v-model="fobj.roletype" >
+                            <lay-select-option value="1" label="管理员"></lay-select-option>
+                            <lay-select-option value="2" label="用户"></lay-select-option>
+                        </lay-select>
+                    </lay-form-item>
+
+                    <!--<lay-form-item label="" v-if="fobj.roletype=='3'">
+                        <lay-select v-model="fobj.sid" :options="slist">
+
+                        </lay-select>
+                    </lay-form-item>-->
+
+                    <lay-form-item label="电话号码" prop="tel">
+                        <lay-input v-model="fobj.tel" type="tel"></lay-input>
+                    </lay-form-item>
+                    <lay-form-item label="性别">
+                        <lay-select v-model="fobj.sex" >
+                            <lay-select-option value="男" label="男"></lay-select-option>
+                            <lay-select-option value="女" label="女"></lay-select-option>
+                        </lay-select>
+                    </lay-form-item>
+                    <lay-form-item label="密码">
+                        <lay-input v-model="fobj.passwd" type="password"></lay-input>
+                    </lay-form-item>
+                    <lay-form-item label="备注">
+                        <lay-textarea placeholder="请输入描述" v-model="fobj.note"></lay-textarea>
+                    </lay-form-item>
+                    <lay-form-item style="text-align: center;">
+                        <lay-button type="normal" @click="submit1">提交</lay-button>
+                        <lay-button type="default" @click="cancel">取消</lay-button>
+                    </lay-form-item>
+                </lay-form>
+            </div>
+        </div>
+    </lay-container>
+    </lay-config-provider>
+</div>
+<script>
+    const App = {
+        data() {
+            return {
+                dumpuser:false,
+                tbname:'user',
+                showe:false,
+                sobj:{},
+                fobj:{
+                    roletype:2
+                },
+                message:'helloo',
+                page:{ current: 1, limit: 10, total: 100 },
+                selectedKeys:[],
+                loading:false,
+                columns:[
+                    //{ title:"选项", width: "55px", type: "checkbox", ellipsisTooltip:true },
+                    { title:"编号", key:"id", ellipsisTooltip:true, sort: "desc" },
+                    { title:"用户名", key:"username", ellipsisTooltip:true, sort: "desc" },
+                    { title:"电话", key:"tel", ellipsisTooltip:true, sort: "desc" },
+                    { title:"身份", key:"rstr", ellipsisTooltip:true, sort: "desc" },
+                    { title:"操作", width: "150px", customSlot:"operator", key:"operator", fixed: "right", ignoreExport: true }
+                ],
+                dataSource:[],
+                slist:[],
+                rules1: {
+                    tel: {
+                        validator(rule, value, callback, source, options){
+                            const regex = /^1[3456789]\d{9}$/
+                            if (regex.test(value)) {
+                                return true;
+                            } else {
+                                callback(new Error(`${rule.field}不正确`))
+                            }
+                        }
+                    }/*,
+                    username:{
+                        async validator(rule, value, callback, source, options) {
+                            const response = await fetch(`${clientUrl}find?table=user&username=${value}`);
+                            const data = await response.text();
+                            if (data.valid) {
+                                return true;
+                            } else {
+                                return '远程校验未通过';
+                            }
+                        }
+                    }*/
+                }
+            }
+        },
+        mounted() {
+            this.refreshData()
+            ajaxCallback1("list",{table:'shop'},(data) => {
+                let sslist = []
+                for (let s of data) {
+                    sslist.push({label:s.sname,value:s.id})
+                }
+                this.slist = sslist
+            });
+        },
+        methods: {
+            checkUser(){
+                if(this.fobj.username){
+                    ajaxCallback1("find",{table:'user',username:this.fobj.username},(r) => {
+                        if(r && r.id){
+                            this.dumpuser = true
+                        }else{
+                            this.dumpuser = false
+                        }
+                    });
+                }else{
+                    this.dumpuser = false
+                }
+            },
+            toReset(){
+              this.sobj = {}
+            },
+            refreshData(){
+                let s = this.sobj
+                s.table = this.tbname
+                s.page = this.page.current
+                s.limit = this.page.limit
+                this.loading = true
+                ajaxCallback1('listPage',s,(r)=>{
+                    this.loading = false
+                    for (let s of r.rows) {
+                        if(s.roletype == '1'){
+                            s.rstr = '管理员'
+                        }else if(s.roletype == '2'){
+                            s.rstr = '用户'
+                        }else if(s.roletype == '3'){
+                            s.rstr = '团长'
+                        }
+                    }
+                    this.dataSource = r.rows
+                    this.page.total = r.total
+                })
+            },
+            showEdit(row){
+                this.showe = true
+                if(row){
+                    this.fobj = row
+                    showAttach('imgctn',row.img)
+                }else{
+                    showAttach('imgctn',null)
+                    this.fobj = {
+                        roletype:'2',
+                        sex:'男'
+                    }
+                }
+
+            },
+            submit1(){
+                this.$refs.fobjform1.validate((isValidate, model, errors) => {
+                    if(isValidate){
+                        this.save()
+                    }
+                })
+            },
+            save(){
+                if(this.dumpuser){
+                    alert("用户名已存在")
+                    return
+                }
+
+                this.fobj.table = this.tbname
+                if(this.fobj.sid){
+                    this.fobj.shop = (this.slist.find((item) => item.value == this.fobj.sid)).label
+                }
+                ajaxFormUploadFile((rimg)=>{
+                    this.fobj.img = rimg
+                    ajaxCallback("save",this.fobj,(rid) => {
+                        console.log(rid)
+                        this.showe = false
+                        this.refreshData()
+                    });
+                })
+
+            },
+            cancel(){
+                this.showe = false
+            },
+            del(id){
+                ajaxCallback1("delete",{table: this.tbname, id: id},(r) => {
+                    this.refreshData()
+                });
+            },
+            sortChange(key, sort) {
+                this.sobj.sort = key
+                this.sobj.order = sort
+                this.refreshData()
+            },
+            changeStatus(isChecked, row){
+                this.dataSource.forEach((item) => {
+                    if(item.id === row.id) {
+                        LayuiVue.layer.msg("Success", { icon: 1 }, () => {
+                            item.status = isChecked;
+                        })
+                    }
+                })
+            }
+        },
+    };
+    const app = Vue.createApp(App);
+    app.use(LayuiVue);
+    app.mount("#app");
+</script>
+</body>
+</html>

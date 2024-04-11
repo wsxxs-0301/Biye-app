@@ -1,0 +1,77 @@
+{
+  "homeInfo": {
+    "title": "用户管理",
+    "href": "user-vue.html"
+  },
+  "logoInfo": {
+    "title": "后台管理系统",
+    "image": "./__PUBLIC__/images/login/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "系统管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+
+        {
+          "title": "用户管理",
+          "href": "user-vue.html",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
+          "title": "分类管理",
+          "href": "type-vue.html",
+          "icon": "fa fa-gears",
+          "target": "_self"
+        },
+
+        {
+          "title": "发帖分享管理",
+          "href": "blogreplaymap-vue.html",
+          "icon": "fa fa-gears",
+          "target": "_self"
+        },
+        {
+          "title": "团队",
+          "href": "qunuser-vue.html",
+          "icon": "fa fa-gears",
+          "target": "_self"
+        },
+        {
+          "title": "交流反馈",
+          "href": "postsreplay-vue.html",
+          "icon": "fa fa-gears",
+          "target": "_self"
+        },
+        {
+          "title": "资讯广告",
+          "href": "notice-vue.html",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        },
+        {
+          "title": "旅游资源标签",
+          "href": "tags1-vue.html",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        },
+        {
+          "title": "兴趣爱好标签",
+          "href": "tags2-vue.html",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        },
+        {
+          "title": "技能标签",
+          "href": "tags3-vue.html",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        }
+      ]
+    }
+  ]
+}

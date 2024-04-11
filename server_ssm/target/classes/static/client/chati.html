@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <title id="pagetitle">聊天中</title>
+    <meta charset="utf-8"/>
+    <!--<meta name="format-detection" content="telephone=no"/>-->
+    <!--<meta name="msapplication-tap-highlight" content="no"/>-->
+    <!--<meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">-->
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <!--<meta name="viewport" content="user-scalable=no, width=1280,target-densitydpi=160" />-->
+    <meta id="viewport" name="viewport" content="width=480,target-densitydpi=device-dpi, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" type="text/css" href="lib/jb/jquery.mobile.custom.structure.min.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/colors.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/chatplugs.css"/>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+
+    <script type="text/javascript" src="lib/jb/jquery.mobile.custom.min.js"></script>
+    <script type="text/javascript" src="lib/better-scroll.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/jbtool.js"></script>
+    <script type="text/javascript" src="js/commontool.js"></script>
+    <script type="text/javascript" src="js/ideamodule.js"></script>
+    <script type="text/javascript" src="js/chatplugs.js"></script>
+    <script>
+
+    </script>
+
+    <style>
+        .chatdiv{
+            position: absolute;
+            width: 100%;
+            height: calc(100vh - 60px) !important;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<form action="" method="post" enctype="multipart/form-data" id="uploadForm">
+    <input style="display: none;" id="selectimginput" onchange="showPicImg(this.files);" name="file" type="file"/>
+</form>
+<form action="" method="post" enctype="multipart/form-data" id="uploadForm2">
+    <input style="display: none;" id="selectimginput2" onchange="showPicImg2(this.files);" name="file" type="file"/>
+</form>
+<div id="blankpage" data-role="page"></div>
+
+
+
+
+
+
+
+<div data-role="page" id="userdetailpage">
+    <div class="pageheader">
+        <a href="#" onclick="goback();" class="hbtnleft hbtniconleft iconback">返回</a>
+        <h1 class="htitle">用户信息</h1>
+        <a href="#" class="hbtnright"></a>
+    </div>
+
+    <div class="pagecontainer pagecontainernofooter">
+        <!--<ul class="titlenavalone">
+            <li onclick="toMyFriend();">
+                <h2>我的关注</h2>
+            </li>
+            <li onclick="toLastMessage();">
+                <h2>我的消息</h2>
+            </li>
+        </ul>-->
+        <div class="detailctn paddingctn">
+            <p id="vusername2">
+
+            </p>
+
+
+            <img width="50%" id="vuserimg2">
+
+            <p id="vbirth2">
+
+            </p>
+            <p id="vsex2">
+
+            </p>
+            <p id="vqq2">
+
+            </p>
+            <a id="vemail2">
+
+            </a>
+
+            <a href="#" onclick="toMyBlog(focususer.id);" class="btn1">TA的发布</a>
+            <div id="canadd">
+                <a href="#" onclick="toAddFriend();" class="btn1">加为关注</a>
+                <a href="#" onclick="toChat(focususer.id,1);" class="btn1">发送信息</a>
+            </div>
+            <div id="candelf">
+                <a href="#" onclick="toChat(focususer.id,1);" class="btn1">发送信息</a>
+                <a href="#" onclick="delFriend();" class="btn1">加入黑名单</a>
+                <a href="#" onclick="delFriend();" class="btn1">删除关注</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="preaddfriendpage" class="" data-role="page">
+    <div class="pageheader">
+        <a href="#" onclick="toMore();" class="hbtnleft hbtniconleft iconback">返回</a>
+        <h1 class="htitle">填写备注</h1>
+        <a href="#" class="hbtnright"></a>
+    </div>
+    <div class="pagecontainer paddingctn">
+        <form action="" id="form" >
+            <label>备注请求</label>
+	        <textarea id="anote" class="binput1 textarea-h"></textarea>
+            <a href="#" onclick="sendYzMessage();" class="btn1">提交</a>
+        </form>
+    </div>
+
+</div>
+
+
+<div data-role="page" id="friendpage">
+    <div class="pageheader">
+        <a href="#" onclick="toMore();" class="hbtnleft hbtniconleft "></a>
+        <h1 class="htitle">通讯录</h1>
+        <a href="#" class="hbtnright"></a>
+    </div>
+
+    <div class="pagecontainer pagecontainernofooter">
+        <!--<ul class="titlenavalone">
+            <li onclick="toMyFriend();" class="titlenavalonefocus">
+                <h2>我的关注</h2>
+            </li>
+            <li onclick="toLastMessage();">
+                <h2>我的消息</h2>
+            </li>
+        </ul>-->
+        <div class="">
+            <ul class="linklist1"  style="margin-bottom: 20px;">
+                <li onclick="toMyQunzu();" data-url="gerenpage4">
+                    <img src="images/icons/luntan.png" alt="">
+                    <h2>团队</h2>
+                </li>
+
+                <li onclick="toMyYanzhengMessage();" data-url="gerenpage2">
+                    <img src="images/icons/tuandui.png" alt="">
+                    <h2>新的朋友</h2>
+                </li>
+            </ul>
+            <div class="paddingctn">
+                <ul id="myfriendlist" data-filter="搜索关键字...">
+
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="pagefooter">
+        <div onclick="toLastMessage();" class="footeritem iconxiaoxi">
+            消息
+        </div>
+        <div onclick="toMyFriend();" class="footeritem icontongxunlu ">
+            通讯录
+        </div>
+        
+        <div onclick="toBlog2();" class="footeritem iconfaxian">
+            发现
+        </div>
+        <div onclick="toMore();" class="footeritem icongerenzhongxin">
+            我
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="addfriendpage">
+    <div class="pageheader">
+        <a href="#" onclick="toMyFriend();" class="hbtnleft hbtniconleft ">返回</a>
+        <h1 class="htitle">推荐新朋友</h1>
+        <a href="#" class="hbtnright"></a>
+    </div>
+
+    <div class="pagecontainer pagecontainernofooter">
+        <div class="">
+            <div class="paddingctn">
+                <ul id="searchuserlist" data-filter="搜索关键字...">
+
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="pagefooter">
+        <div onclick="toLastMessage();" class="footeritem iconxiaoxi">
+            消息
+        </div>
+        <div onclick="toMyFriend();" class="footeritem icontongxunlu ">
+            通讯录
+        </div>
+        
+        <div onclick="toBlog2();" class="footeritem iconfaxian">
+            发现
+        </div>
+        <div onclick="toMore();" class="footeritem icongerenzhongxin">
+            我
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="lastmessagepage">
+    <div class="pageheader">
+        <a href="#" onclick="" class="hbtnleft hbtniconleft"></a>
+        <h1 class="htitle">消息</h1>
+        <a href="#" class="hbtnright"></a>
+    </div>
+
+    <div class="pagecontainer pagecontainernofooter">
+        <!--<ul class="titlenavalone">
+            <li onclick="toMyFriend();">
+                <h2>我的关注</h2>
+            </li>
+            <li onclick="toLastMessage();"  class="titlenavalonefocus">
+                <h2>我的消息</h2>
+            </li>
+        </ul>-->
+        <ul id="mymessagelist">
+
+        </ul>
+    </div>
+    <div class="pagefooter">
+        <div onclick="toLastMessage();" class="footeritem iconxiaoxi">
+            消息
+        </div>
+        <div onclick="toMyFriend();" class="footeritem icontongxunlu ">
+            通讯录
+        </div>
+        
+        <div onclick="toBlog2();" class="footeritem iconfaxian">
+            发现
+        </div>
+        <div onclick="toMore();" class="footeritem icongerenzhongxin">
+            我
+        </div>
+    </div>
+</div>
+<div data-role="page" id="chatpage">
+    <!--<div class="pageheader" id="chatpageheader">
+        <a href="#" onclick="backclear();" class="hbtnleft hbtniconleft iconback">返回</a>
+        <h1 class="htitle">聊天</h1>
+        <a href="#" class="hbtnright"></a>
+    </div>-->
+
+    <div class="pagecontainer pagecontainernofooter">
+        <div id="chatdiv" class="chatdiv">
+            <ul class="chatul" id="chatlist">
+
+            </ul>
+        </div>
+    </div>
+    <div class="chatfooter">
+        <div class="chatinputarea">
+            <a href="#" class="chatattachbtn" id="chatattachbtn"></a>
+            <textarea id="msgaarea" class="chattextarea"></textarea>
+            <a href="#" class="sendbtn" onclick="sendMsg();">发送</a>
+        </div>
+
+        <div class="chatselectfilectn" id="chatselectfilectn">
+            <div id="chatattach"></div>
+            <!--<a href="#" class="btn1" onclick="getFileInput(this);">发送图片</a>-->
+            <a href="#" class="btn1" onclick="getFileInput(this);">发送图片文件</a>
+           <!-- <a href="#" class="btn1" onclick="toSelectAddressPage('msgaarea')">发送位置</a>-->
+            <!--<a href="#" id="recordbtn" class="btn1" >发送语音</a>-->
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="yzmessagelistpage">
+    <div class="pageheader">
+        <a href="#" onclick="toMore();" class="hbtnleft hbtniconleft "></a>
+        <h1 class="htitle">新朋友</h1>
+        <a href="#" class="hbtnright"></a>
+    </div>
+
+    <div class="pagecontainer pagecontainernofooter">
+        <div class="paddingctn">
+            <a href="#" onclick="toSearchFriend();" class="btn1">查找新朋友</a>
+            <ul id="yzmessagelist" data-filter="搜索关键字...">
+
+            </ul>
+        </div>
+    </div>
+    <div class="pagefooter">
+        <div onclick="toLastMessage();" class="footeritem iconxiaoxi">
+            消息
+        </div>
+        <div onclick="toMyFriend();" class="footeritem icontongxunlu ">
+            通讯录
+        </div>
+        <div onclick="toBlog2();" class="footeritem iconfaxian">
+            发现
+        </div>
+        <div onclick="toMore();" class="footeritem icongerenzhongxin">
+            我
+        </div>
+    </div>
+</div>
+
+<div id="yzmsgdetailpage" class="" data-role="page">
+    <div class="pageheader">
+        <a href="#" onclick="goback();" class="hbtnleft hbtniconleft iconback">返回</a>
+        <h1 class="htitle">验证消息</h1>
+        <a href="#" onclick="" class="hbtnright"></a>
+    </div>
+    <div class="pagecontainer">
+        <div class="paddingctn detailctn">
+            <p id="vusername4"></p>
+            <p id="vstatus"></p>
+            <div id="nimg">
+
+            </div>
+            <div id="nnote">
+
+            </div>
+            <div id="opctn">
+                <a href="#" onclick="agree();" class="btn1 color1">同意</a>
+                <a href="#" onclick="refuse();" class="btn1 color2">拒绝</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div data-role="page" id="selectuserpage">
+    <div class="pageheader">
+        <a href="#" onclick="goback();" class="hbtnleft hbtniconleft ">返回</a>
+        <h1 class="htitle">选择朋友</h1>
+        <a href="#" class="hbtnright"></a>
+    </div>
+
+    <div class="pagecontainer pagecontainernofooter">
+        <div class="">
+            <div class="paddingctn">
+                <input id="qltitle" type="text" class="binput1" placeholder="输入团队名称" />
+                <input type="hidden" id="qunid" />
+                <a href="#" onclick="createQunliao();" class="btn1">确定</a>
+                <ul id="selectuserlist" data-filter="搜索关键字...">
+
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div data-role="page" id="myqunzupage">
+    <div class="pageheader">
+        <a href="#" onclick="toMore();" class="hbtnleft hbtniconleft iconback"></a>
+        <h1 class="htitle">团队</h1>
+        <a href="#" onclick="toSelectUsers();" class="hbtnright">新建</a>
+    </div>
+
+    <div class="pagecontainer pagecontainernofooter">
+        <!--<ul class="titlenavalone">
+            <li onclick="toMyFriend();" class="titlenavalonefocus">
+                <h2>我的关注</h2>
+            </li>
+            <li onclick="toLastMessage();">
+                <h2>我的消息</h2>
+            </li>
+        </ul>-->
+        <div class="">
+            <div class="paddingctn">
+                <ul id="myqunzulist" data-filter="搜索关键字...">
+
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div data-role="page" id="qundetailpage">
+    <div class="pageheader">
+        <a href="#" onclick="goback();" class="hbtnleft hbtniconleft iconback">返回</a>
+        <h1 class="htitle">团队信息</h1>
+        <a href="#" class="hbtnright"></a>
+    </div>
+
+    <div class="pagecontainer pagecontainernofooter">
+        <div class="detailctn paddingctn">
+            <p id="vqtitle">
+
+            </p>
+            <!--<img width="50%" id="vq">-->
+            <p id="quntitle">
+
+            </p>
+            <p id="qundesc">
+
+            </p>
+            <ul id="qunuserlist" data-filter="搜索..."></ul>
+            <div id="canadd2">
+                <!--<a href="#" onclick="addQunzu();" class="btn1">加为关注</a>-->
+                <a href="#" onclick="toChat(focusqun.id,2);" class="btn1">发送信息</a>
+            </div>
+            <div id="candelf2">
+                <!--<a href="#" onclick="toChat(focusqun.id,2);" class="btn1">发送信息</a>-->
+                <a href="#" onclick="toChat(focusqun.id,2);" class="btn1">发送信息</a>
+                <a href="#" onclick="toSelectUsers(focusqun.id);" class="btn1">管理成员</a>
+                <a href="#" onclick="delQunzus();" class="btn1">删除团队</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--<div data-role="page" data-theme="a" id="selectaddresspage">
+    <div data-theme="a" data-role="header" data-position="fixed">
+        <h1 class="ui-title">
+            选择地址
+        </h1>
+        <a onclick="toMain();" class="ui-btn ui-btn-left ui-btn-icon-left ui-icon-back">
+            返回
+        </a>
+    </div>
+    <div role="main" class="ui-content" style="margin: 60px 0 0 0;padding: 0;">
+        <iframe width="100%" height="650px" frameborder=0
+                src="http://apis.map.qq.com/tools/locpicker?search=1&type=1&key=W7YBZ-6ZBCW-RLBRW-OWWPF-AAJQO-POBJ4&referer=myapp&coordtype=3">
+        </iframe>
+    </div>
+
+</div>-->
+
+</body>
+
+</html>
